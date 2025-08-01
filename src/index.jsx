@@ -1,0 +1,25 @@
+import React from "react";
+import "./index.css";
+
+export default function HomePage() {
+  return (
+    <div className="container">
+      <nav className="navbar">
+        <div className="logo">MedTracker</div>
+        <ul className="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#openfda">openFDA</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#login">Login</a></li>
+        </ul>
+      </nav>
+
+      <header className="hero" id="home">
+        <h1>Welcome to MedTracker</h1>
+        <p>We care about your health. Stay on track with your medication, monitor your vitals, and support your caregivers.</p>
+        <img src="/1.jpg" alt="MedTracker preview" className="hero-image" />
+      </header>
+    </div>
+  );
+}
