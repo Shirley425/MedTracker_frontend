@@ -10,6 +10,11 @@ body {
   color: #333;
 }
 
+p {
+padding: 0.5rem 0.5rem;
+font-family: sans-serif;
+}
+
 .container {
   width: 100%;
   min-height: 100vh;
@@ -52,7 +57,7 @@ body {
 }
 
 .hero {
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
   text-align: center;
   background-color: #e9f2fb;
 }
