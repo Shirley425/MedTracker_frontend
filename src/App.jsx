@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import IndexPage from "./IndexPage";
-import Login from "./Login";
-import LogMedication from "./LogMedication";
+import IndexPage from "./index";
+import Login from "./Components/login";
+import LogMedication from "./Components/logMedication";
 
 function App() {
   return (

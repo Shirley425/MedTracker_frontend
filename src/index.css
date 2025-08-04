@@ -1,4 +1,4 @@
-/* Reset some default styles */
+
 body, ul {
   margin: 0;
   padding: 0;
@@ -10,16 +10,15 @@ body {
   color: #333;
 }
 
-/* Container */
 .container {
   width: 100%;
   min-height: 100vh;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
+  font-size: 1.4rem;
   align-items: center;
   padding: 1rem 2rem;
   background-color: #ffffff;
@@ -30,7 +29,7 @@ body {
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 3rem;
   font-weight: bold;
   color: #0077cc;
 }
@@ -52,7 +51,6 @@ body {
   color: #0077cc;
 }
 
-/* Hero section */
 .hero {
   padding: 4rem 2rem;
   text-align: center;
@@ -65,7 +63,7 @@ body {
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   max-width: 600px;
   margin: 0 auto;
 }
