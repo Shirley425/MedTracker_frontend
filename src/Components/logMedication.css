@@ -1,0 +1,59 @@
+.med-log-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f7f9fc;
+  min-height: 100vh;
+}
+
+.med-log-form {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+}
+
+.med-log-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.med-log-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.med-log-form input,
+.med-log-form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+}
+
+.med-log-form textarea {
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.7rem;
+  background-color: #0077cc;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #005fa3;
+}
