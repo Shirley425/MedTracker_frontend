@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./logMedication.css";
 
-export default function LogMedication() {
+const LogMedication = () => {
   const [formData, setFormData] = useState({
     name: "",
     dosage: "",
@@ -90,3 +90,5 @@ export default function LogMedication() {
     </div>
   );
 }
+
+export default LogMedication;

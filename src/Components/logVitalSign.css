@@ -1,0 +1,41 @@
+.vital-sign-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+.vital-sign-form h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.vital-sign-form label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+}
+
+.vital-sign-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  box-sizing: border-box;
+}
+
+.vital-sign-form button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vital-sign-form button:hover {
+  background-color: #1565c0;
+}
