@@ -3,19 +3,16 @@ import "./LogVitalSign.css";
 import { createVitalSign } from "../api";
 
 const INITIAL_FORM_DATA = {
-  user_id: "1",
   date: new Date().toISOString().slice(0, 10),
   heart_rate: "",
   body_temperature: "",
-  blood_pressure: "",
+  blood_pressure_systolic: "",
+  blood_pressure_diastolic: "",
   blood_sugar: "",
 };
 
-const VitalSign = ({ userId = 1, onCreated }) => {
-  const [formData, setFormData] = useState({
-    ...INITIAL_FORM_DATA,
-    user_id: String(userId),
-  });
+const VitalSign = ({ onCreated }) => {
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -34,11 +31,9 @@ const VitalSign = ({ userId = 1, onCreated }) => {
     try {
       await createVitalSign({
         ...formData,
-        user_id: Number(formData.user_id),
       });
       setFormData({
         ...INITIAL_FORM_DATA,
-        user_id: String(userId),
         date: new Date().toISOString().slice(0, 10),
       });
       setMessage("Vital signs saved to the backend.");
@@ -87,11 +82,21 @@ const VitalSign = ({ userId = 1, onCreated }) => {
       </label>
 
       <label>
-        Blood Pressure (mmHg):
+        Blood Pressure Systolic (mmHg):
         <input
-          type="text"
-          name="blood_pressure"
-          value={formData.blood_pressure}
+          type="number"
+          name="blood_pressure_systolic"
+          value={formData.blood_pressure_systolic}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label>
+        Blood Pressure Diastolic (mmHg):
+        <input
+          type="number"
+          name="blood_pressure_diastolic"
+          value={formData.blood_pressure_diastolic}
           onChange={handleChange}
         />
       </label>

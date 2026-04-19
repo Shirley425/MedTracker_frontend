@@ -48,8 +48,8 @@ const Dashboard = () => {
     async function recordTakenFromSlack() {
       try {
         await createMedicationRecord({
-          user_id: currentUser.id,
           medication_id: Number(medicationId),
+          source: "SLACK",
         });
 
         if (isMounted) {
@@ -93,7 +93,7 @@ const Dashboard = () => {
         </button>
         {openFeature === "medication" && (
           <div className="dashboard-content">
-            <LogMedication userId={currentUser.id} onCreated={handleMedicationCreated} />
+            <LogMedication onCreated={handleMedicationCreated} />
           </div>
         )}
       </div>
@@ -109,7 +109,6 @@ const Dashboard = () => {
           <div className="dashboard-content">
             <CurrentMedication
               currentUser={currentUser}
-              userId={currentUser.id}
               refreshKey={medicationRefreshKey}
             />
           </div>
@@ -125,7 +124,7 @@ const Dashboard = () => {
         </button>
         {openFeature === "vital" && (
           <div className="dashboard-content">
-            <VitalSign userId={currentUser.id} onCreated={handleVitalCreated} />
+            <VitalSign onCreated={handleVitalCreated} />
           </div>
         )}
       </div>
@@ -139,7 +138,7 @@ const Dashboard = () => {
         </button>
         {openFeature === "medicationchart" && (
           <div className="dashboard-content">
-            <MedicationChart userId={currentUser.id} refreshKey={medicationRefreshKey} />
+            <MedicationChart refreshKey={medicationRefreshKey} />
           </div>
         )}
       </div>
@@ -153,7 +152,7 @@ const Dashboard = () => {
         </button>
         {openFeature === "vitalSignChart" && (
           <div className="dashboard-content">
-            <VitalSignChart userId={currentUser.id} refreshKey={vitalRefreshKey} />
+            <VitalSignChart refreshKey={vitalRefreshKey} />
           </div>
         )}
       </div>

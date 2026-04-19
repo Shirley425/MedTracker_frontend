@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./CurrentMedication.css";
 import {
   createMedicationRecord,
-  getMedicationRecordsByUserId,
-  getMedicationsByUserId,
+  getMyMedicationRecords,
+  getMyMedications,
   sendMedicationSlackReminder,
   updateMedicationSlackNotifications,
-  updateUserSlackWebhook,
+  updateMySlackConnection,
 } from "../api";
 import { useAuth } from "../AuthContext";
 
@@ -23,7 +23,7 @@ const formatTakenAt = (value) => {
   });
 };
 
-const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
+const CurrentMedication = ({ currentUser, refreshKey = 0 }) => {
   const { updateCurrentUser } = useAuth();
   const [medications, setMedications] = useState([]);
   const [recordSummary, setRecordSummary] = useState({});
@@ -31,12 +31,12 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
   const [error, setError] = useState("");
   const [activeMedicationId, setActiveMedicationId] = useState(null);
   const [slackActionMedicationId, setSlackActionMedicationId] = useState(null);
-  const [slackWebhookUrl, setSlackWebhookUrl] = useState("");
+  const [slackMemberId, setSlackMemberId] = useState("");
   const [slackMessage, setSlackMessage] = useState("");
   const [isSavingSlackWebhook, setIsSavingSlackWebhook] = useState(false);
 
   useEffect(() => {
-    setSlackWebhookUrl("");
+    setSlackMemberId(currentUser?.slack_member_id || "");
   }, [currentUser?.id]);
 
   useEffect(() => {
@@ -48,8 +48,8 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
 
       try {
         const [medicationItems, recordItems] = await Promise.all([
-          getMedicationsByUserId(userId),
-          getMedicationRecordsByUserId(userId),
+          getMyMedications(),
+          getMyMedicationRecords(),
         ]);
 
         if (isMounted) {
@@ -94,7 +94,7 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
     return () => {
       isMounted = false;
     };
-  }, [refreshKey, userId]);
+  }, [refreshKey]);
 
   const handleTakenClick = async (medicationId) => {
     setActiveMedicationId(medicationId);
@@ -102,8 +102,8 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
 
     try {
       const record = await createMedicationRecord({
-        user_id: userId,
         medication_id: medicationId,
+        source: "MANUAL",
       });
 
       setRecordSummary((current) => {
@@ -127,18 +127,17 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
     }
   };
 
-  const handleSlackWebhookSave = async () => {
+  const handleSlackConnectionSave = async () => {
     setIsSavingSlackWebhook(true);
     setSlackMessage("");
     setError("");
 
     try {
-      const updatedUser = await updateUserSlackWebhook(userId, slackWebhookUrl);
+      const updatedUser = await updateMySlackConnection(slackMemberId);
       updateCurrentUser(updatedUser);
-      setSlackWebhookUrl("");
-      setSlackMessage("Slack connected successfully.");
+      setSlackMessage("Slack App connected successfully.");
     } catch (saveError) {
-      setError(saveError.message || "Unable to save Slack webhook.");
+      setError(saveError.message || "Unable to save Slack connection.");
     } finally {
       setIsSavingSlackWebhook(false);
     }
@@ -190,24 +189,24 @@ const CurrentMedication = ({ currentUser, userId = 1, refreshKey = 0 }) => {
       <h2>Current Medication Tracker</h2>
 
       <div className="slack-connect-card">
-        <h3>Slack Reminder Connection</h3>
+        <h3>Slack App Connection</h3>
         <p>
-          Connect a Slack incoming webhook once, then turn reminders on or off for each medication.
+          Link your Slack member ID so MedTracker can DM reminders and record Taken actions directly from Slack.
         </p>
         <div className="slack-connect-row">
           <input
-            type="url"
-            placeholder="Paste your Slack webhook URL"
-            value={slackWebhookUrl}
-            onChange={(event) => setSlackWebhookUrl(event.target.value)}
+            type="text"
+            placeholder="Enter your Slack member ID, for example U01234567"
+            value={slackMemberId}
+            onChange={(event) => setSlackMemberId(event.target.value)}
           />
           <button
             type="button"
             className="slack-save-button"
-            onClick={handleSlackWebhookSave}
+            onClick={handleSlackConnectionSave}
             disabled={isSavingSlackWebhook}
           >
-            {isSavingSlackWebhook ? "Saving..." : "Connect Slack"}
+            {isSavingSlackWebhook ? "Saving..." : "Link Slack App"}
           </button>
         </div>
         <p className="slack-status">

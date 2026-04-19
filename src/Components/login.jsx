@@ -27,11 +27,11 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const user = await loginUser({
+      const session = await loginUser({
         email: email.trim(),
         password,
       });
-      login(user);
+      login(session);
       navigate(redirectTarget, { replace: true });
     } catch (loginError) {
       setError(loginError.message || "Invalid email or password.");

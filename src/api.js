@@ -1,3 +1,5 @@
+import { AUTH_STORAGE_KEY } from "./AuthContext";
+
 function getDefaultApiBaseUrl() {
   if (typeof window === "undefined") {
     return "http://localhost:8080";
@@ -10,10 +12,25 @@ function getDefaultApiBaseUrl() {
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL?.replace(/\/$/, "") || getDefaultApiBaseUrl();
 
+function getAuthToken() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const session = JSON.parse(window.localStorage.getItem(AUTH_STORAGE_KEY) || "null");
+    return session?.token || null;
+  } catch (error) {
+    return null;
+  }
+}
+
 async function request(path, options = {}) {
+  const token = getAuthToken();
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
     ...options,
@@ -56,6 +73,10 @@ export function getMedicationsByUserId(userId) {
   );
 }
 
+export function getMyMedications() {
+  return request("/api/medications/me").then((items) => sortByDateDesc(items, "start_date"));
+}
+
 export function updateMedicationSlackNotifications(medicationId, enabled) {
   return request(`/api/medications/${medicationId}/slack-notifications`, {
     method: "PUT",
@@ -90,6 +111,10 @@ export function getMedicationRecordsByUserId(userId) {
   return request(`/api/medication-records/user/${userId}`);
 }
 
+export function getMyMedicationRecords() {
+  return request("/api/medication-records/me");
+}
+
 export function createMedicationRecord(payload) {
   return request("/api/medication-records", {
     method: "POST",
@@ -97,10 +122,17 @@ export function createMedicationRecord(payload) {
   });
 }
 
-export function updateUserSlackWebhook(userId, webhookUrl) {
-  return request(`/api/users/${userId}/slack-webhook`, {
+export function updateUserSlackConnection(userId, slackMemberId) {
+  return request(`/api/users/${userId}/slack-connection`, {
     method: "PUT",
-    body: JSON.stringify({ webhookUrl }),
+    body: JSON.stringify({ slack_member_id: slackMemberId }),
+  });
+}
+
+export function updateMySlackConnection(slackMemberId) {
+  return request("/api/users/me/slack-connection", {
+    method: "PUT",
+    body: JSON.stringify({ slack_member_id: slackMemberId }),
   });
 }
 
@@ -109,4 +141,8 @@ export function createVitalSign(payload) {
     method: "POST",
     body: JSON.stringify(payload),
   });
+}
+
+export function getMyVitalSigns() {
+  return request("/api/vitalsigns/me").then((items) => sortByDateDesc(items, "date"));
 }

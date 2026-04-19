@@ -9,8 +9,8 @@ import {
   Tooltip,
 } from "recharts";
 import {
-  getMedicationRecordsByUserId,
-  getMedicationsByUserId,
+  getMyMedicationRecords,
+  getMyMedications,
 } from "../api";
 
 const getTimeSlot = (value) => {
@@ -54,7 +54,7 @@ const MedicationTooltip = ({ active, payload }) => {
   );
 };
 
-const MedicationChart = ({ userId = 1, refreshKey = 0 }) => {
+const MedicationChart = ({ refreshKey = 0 }) => {
   const [medicationGroups, setMedicationGroups] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -68,8 +68,8 @@ const MedicationChart = ({ userId = 1, refreshKey = 0 }) => {
 
       try {
         const [medications, records] = await Promise.all([
-          getMedicationsByUserId(userId),
-          getMedicationRecordsByUserId(userId),
+          getMyMedications(),
+          getMyMedicationRecords(),
         ]);
 
         if (!isMounted) {
@@ -151,7 +151,7 @@ const MedicationChart = ({ userId = 1, refreshKey = 0 }) => {
     return () => {
       isMounted = false;
     };
-  }, [refreshKey, userId]);
+  }, [refreshKey]);
 
   if (isLoading) {
     return <div className="medication-chart-container">Loading medication chart...</div>;

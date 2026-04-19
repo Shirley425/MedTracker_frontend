@@ -1,18 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const AUTH_STORAGE_KEY = "medtracker_current_user";
+export const AUTH_STORAGE_KEY = "medtracker_auth_session";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [authSession, setAuthSession] = useState(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
     try {
-      const storedUser = window.localStorage.getItem(AUTH_STORAGE_KEY);
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
+      const storedSession = window.localStorage.getItem(AUTH_STORAGE_KEY);
+      if (storedSession) {
+        setAuthSession(JSON.parse(storedSession));
       }
     } catch (error) {
       console.error("Unable to restore saved user session.", error);
@@ -21,26 +21,31 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = (user) => {
-    setCurrentUser(user);
-    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  const login = (session) => {
+    setAuthSession(session);
+    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
   };
 
   const updateCurrentUser = (user) => {
-    setCurrentUser(user);
-    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    setAuthSession((current) => {
+      const nextSession = current ? { ...current, user } : { token: null, user };
+      window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextSession));
+      return nextSession;
+    });
   };
 
   const logout = () => {
-    setCurrentUser(null);
+    setAuthSession(null);
     window.localStorage.removeItem(AUTH_STORAGE_KEY);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        currentUser,
-        isAuthenticated: Boolean(currentUser),
+        authSession,
+        token: authSession?.token || null,
+        currentUser: authSession?.user || null,
+        isAuthenticated: Boolean(authSession?.token),
         isAuthReady,
         login,
         updateCurrentUser,

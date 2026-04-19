@@ -3,7 +3,6 @@ import "./LogMedication.css";
 import { createMedication } from "../api";
 
 const INITIAL_FORM_DATA = {
-  user_id: "1",
   name: "",
   dosage: "",
   frequency: "",
@@ -12,11 +11,8 @@ const INITIAL_FORM_DATA = {
   note: "",
 };
 
-const LogMedication = ({ userId = 1, onCreated }) => {
-  const [formData, setFormData] = useState({
-    ...INITIAL_FORM_DATA,
-    user_id: String(userId),
-  });
+const LogMedication = ({ onCreated }) => {
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -37,12 +33,8 @@ const LogMedication = ({ userId = 1, onCreated }) => {
     try {
       await createMedication({
         ...formData,
-        user_id: Number(formData.user_id),
       });
-      setFormData({
-        ...INITIAL_FORM_DATA,
-        user_id: String(userId),
-      });
+      setFormData(INITIAL_FORM_DATA);
       setMessage("Medication saved to the backend.");
       onCreated?.();
     } catch (submitError) {

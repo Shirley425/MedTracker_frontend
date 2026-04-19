@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./VitalSignChart.css";
-import { getVitalSignsByUserId } from "../api";
+import { getMyVitalSigns } from "../api";
 
 const formatDateLabel = (value) => {
   if (!value) {
@@ -23,15 +23,13 @@ const formatDateLabel = (value) => {
 };
 
 const readBloodPressureValue = (value) => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return null;
   }
-
-  const [systolic] = String(value).split("/");
-  return Number(systolic) || null;
+  return Number(value) || null;
 };
 
-const VitalSignChart = ({ userId = 1, refreshKey = 0 }) => {
+const VitalSignChart = ({ refreshKey = 0 }) => {
   const [vitalSigns, setVitalSigns] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -44,7 +42,7 @@ const VitalSignChart = ({ userId = 1, refreshKey = 0 }) => {
       setError("");
 
       try {
-        const items = await getVitalSignsByUserId(userId);
+        const items = await getMyVitalSigns();
         if (isMounted) {
           setVitalSigns(items);
         }
@@ -64,7 +62,7 @@ const VitalSignChart = ({ userId = 1, refreshKey = 0 }) => {
     return () => {
       isMounted = false;
     };
-  }, [refreshKey, userId]);
+  }, [refreshKey]);
 
   const data = [...vitalSigns]
     .reverse()
@@ -73,7 +71,7 @@ const VitalSignChart = ({ userId = 1, refreshKey = 0 }) => {
       time: formatDateLabel(entry.date),
       heartRate: Number(entry.heart_rate) || null,
       bodyTemperature: Number(entry.body_temperature) || null,
-      bloodPressure: readBloodPressureValue(entry.blood_pressure),
+      bloodPressure: readBloodPressureValue(entry.blood_pressure_systolic),
       bloodSugar: Number(entry.blood_sugar) || null,
     }));
 
