@@ -1,0 +1,114 @@
+.current-medication-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.current-medication-container h2 {
+  text-align: center;
+  color: #333;
+}
+
+.slack-connect-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #dbe5ef;
+  border-radius: 12px;
+  background-color: #f4f8fc;
+}
+
+.slack-connect-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.slack-connect-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.slack-connect-row input {
+  flex: 1;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #c6d3df;
+  border-radius: 10px;
+}
+
+.slack-save-button,
+.slack-reminder-button {
+  border: none;
+  background-color: #4a154b;
+  color: white;
+  padding: 0.65rem 0.95rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.slack-save-button:disabled,
+.slack-reminder-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.slack-status,
+.slack-message {
+  padding: 0;
+  margin: 0.75rem 0 0;
+  color: #35536f;
+  font-weight: 600;
+}
+
+.medication-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.medication-table th,
+.medication-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.medication-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.medication-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.medication-table tr:hover {
+  background-color: #e0f7fa;
+}
+
+.slack-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.taken-button {
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.taken-button:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+.taken-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}

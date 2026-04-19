@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -8,9 +8,87 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import "./vitalSignChart.css";
+import "./VitalSignChart.css";
+import { getVitalSignsByUserId } from "../api";
 
-const VitalSignChart = ({ data }) => {
+const formatDateLabel = (value) => {
+  if (!value) {
+    return "";
+  }
+
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+  });
+};
+
+const readBloodPressureValue = (value) => {
+  if (!value) {
+    return null;
+  }
+
+  const [systolic] = String(value).split("/");
+  return Number(systolic) || null;
+};
+
+const VitalSignChart = ({ userId = 1, refreshKey = 0 }) => {
+  const [vitalSigns, setVitalSigns] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadVitalSigns() {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const items = await getVitalSignsByUserId(userId);
+        if (isMounted) {
+          setVitalSigns(items);
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(loadError.message || "Unable to load vital signs.");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadVitalSigns();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refreshKey, userId]);
+
+  const data = [...vitalSigns]
+    .reverse()
+    .map((entry, index) => ({
+      id: entry.id ?? index,
+      time: formatDateLabel(entry.date),
+      heartRate: Number(entry.heart_rate) || null,
+      bodyTemperature: Number(entry.body_temperature) || null,
+      bloodPressure: readBloodPressureValue(entry.blood_pressure),
+      bloodSugar: Number(entry.blood_sugar) || null,
+    }));
+
+  if (isLoading) {
+    return <div className="charts-container">Loading vital sign charts...</div>;
+  }
+
+  if (error) {
+    return <div className="charts-container">Error: {error}</div>;
+  }
+
+  if (data.length === 0) {
+    return <div className="charts-container">No vital sign data available yet.</div>;
+  }
+
   return (
     <div className="charts-container">
       <h2>Vital Signs Over Time</h2>

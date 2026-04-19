@@ -1,41 +1,52 @@
-import React, { useState } from 'react';
-import './logVitalSign.css';
+import React, { useState } from "react";
+import "./LogVitalSign.css";
+import { createVitalSign } from "../api";
 
-const VitalSign = () => {
+const INITIAL_FORM_DATA = {
+  user_id: "1",
+  date: new Date().toISOString().slice(0, 10),
+  heart_rate: "",
+  body_temperature: "",
+  blood_pressure: "",
+  blood_sugar: "",
+};
+
+const VitalSign = ({ userId = 1, onCreated }) => {
   const [formData, setFormData] = useState({
-    heartRate: '',
-    bodyTemperature: '',
-    bloodPressure: '',
-    bloodSugar: ''
+    ...INITIAL_FORM_DATA,
+    user_id: String(userId),
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/vitalsigns', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+    setIsSubmitting(true);
+    setMessage("");
+    setError("");
 
-      if (response.ok) {
-        alert('Vital signs logged successfully!');
-        setFormData({
-          heartRate: '',
-          bodyTemperature: '',
-          bloodPressure: '',
-          bloodSugar: ''
-        });
-      } else {
-        alert('Error logging vital signs.');
-      }
-    } catch (error) {
-      console.error('Submit error:', error);
+    try {
+      await createVitalSign({
+        ...formData,
+        user_id: Number(formData.user_id),
+      });
+      setFormData({
+        ...INITIAL_FORM_DATA,
+        user_id: String(userId),
+        date: new Date().toISOString().slice(0, 10),
+      });
+      setMessage("Vital signs saved to the backend.");
+      onCreated?.();
+    } catch (submitError) {
+      setError(submitError.message || "Unable to save vital signs.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -44,11 +55,22 @@ const VitalSign = () => {
       <h2>Log Vital Signs</h2>
 
       <label>
+        Date:
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
         Heart Rate (bpm):
         <input
           type="number"
-          name="heartRate"
-          value={formData.heartRate}
+          name="heart_rate"
+          value={formData.heart_rate}
           onChange={handleChange}
         />
       </label>
@@ -58,18 +80,18 @@ const VitalSign = () => {
         <input
           type="number"
           step="0.1"
-          name="bodyTemperature"
-          value={formData.bodyTemperature}
+          name="body_temperature"
+          value={formData.body_temperature}
           onChange={handleChange}
         />
       </label>
 
       <label>
-        Blood Pressure (e.g. 120/80):
+        Blood Pressure (mmHg):
         <input
           type="text"
-          name="bloodPressure"
-          value={formData.bloodPressure}
+          name="blood_pressure"
+          value={formData.blood_pressure}
           onChange={handleChange}
         />
       </label>
@@ -78,13 +100,15 @@ const VitalSign = () => {
         Blood Sugar (mg/dL):
         <input
           type="number"
-          name="bloodSugar"
-          value={formData.bloodSugar}
+          name="blood_sugar"
+          value={formData.blood_sugar}
           onChange={handleChange}
         />
       </label>
 
-      <button type="submit">Submit</button>
+      <button type="submit">{isSubmitting ? "Saving..." : "Submit"}</button>
+      {message && <p className="form-message success">{message}</p>}
+      {error && <p className="form-message error">{error}</p>}
     </form>
   );
 };

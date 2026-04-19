@@ -1,83 +1,62 @@
-import React, { useState } from 'react';
-import LogMedication from './logMedication';
-import VitalSign from './logVitalSign';
-import './features.css';
-import VitalSignChart from './vitalSignChart';
-import MedicationChart from './medicationChart';
+import React from "react";
+import "./Features.css";
 
-const Features = () => {
-  const [openFeature, setOpenFeature] = useState(null);
-
-  const toggleFeature = (featureName) => {
-    setOpenFeature(openFeature === featureName ? null : featureName);
-  };
-
-  const data1 = [
-  { medication: "Aspirin", date: "2025-08-01", status: "taken" },
-  { medication: "Aspirin", date: "2025-08-02", status: "skipped" },
-  { medication: "Ibuprofen", date: "2025-08-01", status: "taken" },
+const featureCards = [
+  {
+    title: "Medication Tracking",
+    description:
+      "Keep a clear record of current medications, dosage plans, start and end dates, and important notes for each treatment.",
+  },
+  {
+    title: "Vital Sign Logging",
+    description:
+      "Capture daily health readings such as heart rate, body temperature, blood pressure, and blood sugar in one place.",
+  },
+  {
+    title: "Progress Charts",
+    description:
+      "Visualize medication schedules and vital sign trends over time so changes are easier to understand at a glance.",
+  },
+  {
+    title: "Personalized View",
+    description:
+      "Each signed-in user sees their own health information, helping keep records private and organized by account.",
+  },
+  {
+    title: "Medication Lookup",
+    description:
+      "Search public medication information through OpenFDA to quickly review indications and possible adverse reactions.",
+  },
+  {
+    title: "Care Support Workflow",
+    description:
+      "Designed to help users and caregivers stay aligned with routines, observations, and treatment history.",
+  },
 ];
 
-  
-
+const Features = () => {
   return (
     <div className="features-container">
-      <h2 className="features-title">Features</h2>
-
-      <div className="feature-block">
-        <button
-          className="feature-button"
-          onClick={() => toggleFeature('medication')}
-        >
-          Log Medication
-        </button>
-        {openFeature === 'medication' && (
-          <div className="feature-content">
-            <LogMedication />
-          </div>
-        )}
+      <div className="features-hero">
+        <p className="features-kicker">Feature Overview</p>
+        <h2 className="features-title">What MedTracker Helps You Do</h2>
+        <p className="features-subtitle">
+          A simple health-tracking workspace for everyday medication and wellness routines.
+        </p>
+        <p className="features-description">
+          MedTracker helps people keep medication schedules, record vital signs,
+          review trend charts, and look up drug information in one place.
+          After signing in, each user sees only their own data.
+        </p>
       </div>
 
-      <div className="feature-block">
-        <button
-          className="feature-button"
-          onClick={() => toggleFeature('vital')}
-        >
-          Log Vital Sign
-        </button>
-        {openFeature === 'vital' && (
-          <div className="feature-content">
-            <VitalSign />
-          </div>
-        )}
-      </div>
-
-      <div className="feature-block">
-        <button
-          className="feature-button"
-          onClick={() => toggleFeature('medicationchart')}
-        >
-          Show Medication Chart
-        </button>
-        {openFeature === 'medicationchart' && (
-          <div className="feature-content">
-            <MedicationChart />
-          </div>
-        )}
-      </div>
-
-      <div className="feature-block">
-        <button
-          className="feature-button"
-          onClick={() => toggleFeature('vitalSignChart')}
-        >
-          Show Vital Sign Chart
-        </button>
-        {openFeature === 'vitalSignChart' && (
-          <div className="feature-content">
-            <VitalSignChart />
-          </div>
-        )}
+      <div className="features-grid">
+        {featureCards.map((card) => (
+          <article key={card.title} className="feature-card">
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </article>
+        ))}
       </div>
     </div>
   );

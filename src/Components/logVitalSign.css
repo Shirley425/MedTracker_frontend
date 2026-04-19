@@ -39,3 +39,17 @@
 .vital-sign-form button:hover {
   background-color: #1565c0;
 }
+
+.form-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-message.success {
+  color: #1f7a1f;
+}
+
+.form-message.error {
+  color: #b42318;
+}

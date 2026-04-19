@@ -1,20 +1,20 @@
 import React from "react";
-import "./aboutUs.css";
+import "./AboutUs.css";
 
 const AboutUs = () => {
   return (
     <div className="about-us-container">
       <h1>About Us</h1>
-      <img
-        src="/images/3.png"
-        alt="Our Team"
-        className="about-image"
-      />
       <p className="about-description">
         MedTracker is dedicated to helping patients and caregivers manage
         medications and vital signs with ease. Our mission is to promote
         healthier lives through technology.
       </p>
+      <img
+        src="/images/3.png"
+        alt="Our Team"
+        className="about-image"
+      />
 
       <h2>Contact Us</h2>
       <form className="contact-form">

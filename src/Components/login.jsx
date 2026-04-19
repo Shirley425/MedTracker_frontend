@@ -1,43 +1,54 @@
-import React, { useState } from "react";
-import "./login.css";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./Login.css";
+import { loginUser } from "../api";
+import { useAuth } from "../AuthContext";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { currentUser, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("patient");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const redirectTarget = location.state?.from?.pathname || "/dashboard";
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate(redirectTarget, { replace: true });
+    }
+  }, [currentUser, navigate, redirectTarget]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password, role });
+    setError("");
+    setIsSubmitting(true);
 
-    // TODO: Call backend login API
+    try {
+      const user = await loginUser({
+        email: email.trim(),
+        password,
+      });
+      login(user);
+      navigate(redirectTarget, { replace: true });
+    } catch (loginError) {
+      setError(loginError.message || "Invalid email or password.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className='login-container'>
       <form className='login-form' onSubmit={handleSubmit}>
-        <h2>Login to MedTracker</h2>
+        <h2>User Login</h2>
+        <p className='login-subtitle'>Sign in to view your medications and vitals.</p>
 
-        <div className='role-tabs'>
-          <button
-            type='button'
-            className={role === "patient" ? "active" : ""}
-            onClick={() => setRole("patient")}
-          >
-            Patient
-          </button>
-          <button
-            type='button'
-            className={role === "caregiver" ? "active" : ""}
-            onClick={() => setRole("caregiver")}
-          >
-            Caregiver
-          </button>
-        </div>
-
-        <label>Email / Username</label>
+        <label>Email</label>
         <input
-          type='text'
+          type='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -52,8 +63,10 @@ const Login = () => {
         />
 
         <button type='submit' className='login-button'>
-          Login
+          {isSubmitting ? "Signing In..." : "Login"}
         </button>
+
+        {error && <p className='login-error'>{error}</p>}
       </form>
     </div>
   );

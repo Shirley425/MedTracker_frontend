@@ -1,15 +1,25 @@
 import React, { useState } from "react";
-import "./logMedication.css";
+import "./LogMedication.css";
+import { createMedication } from "../api";
 
-const LogMedication = () => {
+const INITIAL_FORM_DATA = {
+  user_id: "1",
+  name: "",
+  dosage: "",
+  frequency: "",
+  start_date: "",
+  end_date: "",
+  note: "",
+};
+
+const LogMedication = ({ userId = 1, onCreated }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    dosage: "",
-    frequency: "",
-    start_date: "",
-    end_date: "",
-    note: "",
+    ...INITIAL_FORM_DATA,
+    user_id: String(userId),
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -18,15 +28,28 @@ const LogMedication = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting medication:", formData);
+    setIsSubmitting(true);
+    setMessage("");
+    setError("");
 
-    fetch("http://localhost:8080/api/medications", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      await createMedication({
+        ...formData,
+        user_id: Number(formData.user_id),
+      });
+      setFormData({
+        ...INITIAL_FORM_DATA,
+        user_id: String(userId),
+      });
+      setMessage("Medication saved to the backend.");
+      onCreated?.();
+    } catch (submitError) {
+      setError(submitError.message || "Unable to save medication.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -84,8 +107,11 @@ const LogMedication = () => {
         />
 
         <button type='submit' className='submit-button'>
-          Save
+          {isSubmitting ? "Saving..." : "Save"}
         </button>
+
+        {message && <p className='form-message success'>{message}</p>}
+        {error && <p className='form-message error'>{error}</p>}
       </form>
     </div>
   );
