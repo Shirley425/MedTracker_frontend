@@ -1,0 +1,271 @@
+.current-medication-container {
+  padding: 0.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.tracker-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.current-medication-container h2 {
+  text-align: left;
+  color: var(--color-text);
+  font-size: 1.8rem;
+  margin-bottom: 0;
+}
+
+.tracker-summary {
+  font-weight: 700;
+  color: var(--color-text-soft);
+}
+
+.tracker-empty-state {
+  padding: 1rem 0.25rem 0;
+}
+
+.tracker-action-error {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(192, 61, 66, 0.18);
+  background: rgba(192, 61, 66, 0.08);
+  color: var(--color-danger);
+  font-weight: 700;
+}
+
+.slack-connect-card {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(240, 247, 253, 0.95), rgba(255, 255, 255, 0.95));
+}
+
+.slack-connect-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--color-text);
+}
+
+.slack-connect-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.slack-connect-row input {
+  flex: 1;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(25, 50, 74, 0.14);
+  border-radius: 14px;
+}
+
+.slack-save-button,
+.slack-reminder-button {
+  border: none;
+  background: linear-gradient(135deg, #4a154b, #6b256d);
+  color: white;
+  padding: 0.72rem 1rem;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.slack-save-button:disabled,
+.slack-reminder-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.slack-status,
+.slack-message {
+  margin: 0.75rem 0 0;
+  color: var(--color-text-soft);
+  font-weight: 600;
+}
+
+.medication-table-shell {
+  overflow-x: auto;
+}
+
+.medication-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.medication-name-cell strong {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.medication-table th,
+.medication-table td {
+  border-bottom: 1px solid rgba(25, 50, 74, 0.08);
+  padding: 0.95rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.95rem;
+}
+
+.medication-table th {
+  background: linear-gradient(135deg, #0f4f91, #1268b3);
+  color: white;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.medication-table tr:nth-child(even) {
+  background-color: rgba(245, 249, 252, 0.9);
+}
+
+.medication-table tr:hover {
+  background-color: rgba(229, 243, 252, 0.92);
+}
+
+.medication-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.slack-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.slack-toggle input {
+  accent-color: var(--color-primary);
+}
+
+.status-pill,
+.taken-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.status-pill.on {
+  background: rgba(28, 165, 140, 0.14);
+  color: #16685a;
+}
+
+.status-pill.off {
+  background: rgba(84, 112, 138, 0.12);
+  color: #546d84;
+}
+
+.taken-count-pill {
+  background: rgba(18, 104, 179, 0.12);
+  color: var(--color-primary-strong);
+}
+
+.taken-button {
+  border: none;
+  background: linear-gradient(135deg, var(--color-accent), #2cb89c);
+  color: white;
+  padding: 0.65rem 0.95rem;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.taken-button:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+
+.taken-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+@media (max-width: 900px) {
+  .tracker-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .slack-connect-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  .medication-table,
+  .medication-table thead,
+  .medication-table tbody,
+  .medication-table th,
+  .medication-table td,
+  .medication-table tr {
+    display: block;
+  }
+
+  .medication-table {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .medication-table thead {
+    display: none;
+  }
+
+  .medication-table tbody {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .medication-table tr {
+    padding: 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .medication-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(25, 50, 74, 0.08);
+    white-space: normal;
+    text-align: right;
+  }
+
+  .medication-table td::before {
+    content: attr(data-label);
+    flex: 0 0 42%;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-soft);
+  }
+
+  .medication-table tr td:last-child {
+    border-bottom: none;
+  }
+
+  .slack-toggle {
+    justify-content: flex-end;
+  }
+}

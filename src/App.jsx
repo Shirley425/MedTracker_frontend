@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./Components/HomePage";
-import Login from "./Components/Login";
-import AboutUs from "./Components/AboutUs";
-import Features from "./Components/Features";
-import Dashboard from "./Components/Dashboard";
-import Navbar from "./Components/Navbar";
-import OpenFDA from "./Components/OpenFDA";
+import "./App.css";
+import HomePage from "./pages/HomePage/HomePage";
+import Login from "./pages/Login/Login";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import Features from "./pages/Features/Features";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Navbar from "./components/Navbar/Navbar";
+import OpenFDA from "./pages/OpenFDA/OpenFDA";
 import { AuthProvider } from "./AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 

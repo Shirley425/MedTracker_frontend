@@ -37,8 +37,8 @@ async function request(path, options = {}) {
   });
 
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || `Request failed with status ${response.status}`);
+    const error = await toRequestError(response);
+    throw error;
   }
 
   if (response.status === 204) {
@@ -46,6 +46,33 @@ async function request(path, options = {}) {
   }
 
   return response.json();
+}
+
+async function toRequestError(response) {
+  let payload = null;
+  const contentType = response.headers.get("content-type") || "";
+
+  try {
+    payload = contentType.includes("application/json")
+      ? await response.json()
+      : await response.text();
+  } catch (error) {
+    payload = null;
+  }
+
+  if (payload && typeof payload === "object") {
+    const details = Array.isArray(payload.details) && payload.details.length > 0
+      ? ` ${payload.details.join(" ")}`
+      : "";
+    const message = payload.message || payload.error || `Request failed with status ${response.status}`;
+    return new Error(`${message}${details}`.trim());
+  }
+
+  if (typeof payload === "string" && payload.trim()) {
+    return new Error(payload.trim());
+  }
+
+  return new Error(`Request failed with status ${response.status}`);
 }
 
 function sortByDateDesc(items, fieldName) {
@@ -56,21 +83,11 @@ function sortByDateDesc(items, fieldName) {
   });
 }
 
-export function getMedications() {
-  return request("/api/medications").then((items) => sortByDateDesc(items, "start_date"));
-}
-
 export function loginUser(payload) {
   return request("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-}
-
-export function getMedicationsByUserId(userId) {
-  return request(`/api/medications/user/${userId}`).then((items) =>
-    sortByDateDesc(items, "start_date")
-  );
 }
 
 export function getMyMedications() {
@@ -97,20 +114,6 @@ export function createMedication(payload) {
   });
 }
 
-export function getVitalSigns() {
-  return request("/api/vitalsigns").then((items) => sortByDateDesc(items, "date"));
-}
-
-export function getVitalSignsByUserId(userId) {
-  return request(`/api/vitalsigns/user/${userId}`).then((items) =>
-    sortByDateDesc(items, "date")
-  );
-}
-
-export function getMedicationRecordsByUserId(userId) {
-  return request(`/api/medication-records/user/${userId}`);
-}
-
 export function getMyMedicationRecords() {
   return request("/api/medication-records/me");
 }
@@ -119,13 +122,6 @@ export function createMedicationRecord(payload) {
   return request("/api/medication-records", {
     method: "POST",
     body: JSON.stringify(payload),
-  });
-}
-
-export function updateUserSlackConnection(userId, slackMemberId) {
-  return request(`/api/users/${userId}/slack-connection`, {
-    method: "PUT",
-    body: JSON.stringify({ slack_member_id: slackMemberId }),
   });
 }
 

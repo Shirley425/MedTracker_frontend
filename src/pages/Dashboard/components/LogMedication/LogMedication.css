@@ -1,0 +1,83 @@
+.med-log-container {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.med-log-form {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 249, 253, 0.95));
+  padding: 2rem 2rem 1.6rem;
+  border-radius: 22px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  max-width: 620px;
+}
+
+.med-log-form h2 {
+  text-align: left;
+  margin-bottom: 1.2rem;
+  color: var(--color-text);
+}
+
+.med-log-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.med-log-form input,
+.med-log-form textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(25, 50, 74, 0.14);
+  border-radius: 14px;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.med-log-form textarea {
+  resize: vertical;
+}
+
+.med-log-form input:focus,
+.med-log-form textarea:focus {
+  outline: none;
+  border-color: rgba(18, 104, 179, 0.52);
+  box-shadow: 0 0 0 4px rgba(18, 104, 179, 0.12);
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, var(--color-primary), #2491de);
+  color: white;
+  font-weight: 800;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 24px rgba(18, 104, 179, 0.2);
+}
+
+.submit-button:hover {
+  transform: translateY(-1px);
+}
+
+.form-message {
+  margin-top: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.form-message.success {
+  color: #16685a;
+}
+
+.form-message.error {
+  color: var(--color-danger);
+}

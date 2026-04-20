@@ -1,38 +1,87 @@
-.App {
-  text-align: center;
+:root {
+  --font-sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+  --color-bg: #f4f7fb;
+  --color-surface: rgba(255, 255, 255, 0.88);
+  --color-surface-strong: #ffffff;
+  --color-text: #19324a;
+  --color-text-soft: #54708a;
+  --color-border: rgba(25, 50, 74, 0.12);
+  --color-primary: #1268b3;
+  --color-primary-strong: #0f4f91;
+  --color-accent: #1ca58c;
+  --color-danger: #c03d42;
+  --shadow-soft: 0 18px 44px rgba(22, 50, 79, 0.08);
+  --shadow-card: 0 14px 34px rgba(22, 50, 79, 0.1);
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-.App-header {
-  background-color: #282c34;
+body {
+  margin: 0;
   min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top left, rgba(28, 165, 140, 0.12), transparent 24rem),
+    radial-gradient(circle at top right, rgba(18, 104, 179, 0.14), transparent 28rem),
+    linear-gradient(180deg, #f8fbff 0%, #eef4f9 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+  color: var(--color-text-soft);
+  line-height: 1.7;
+}
+
+.container {
+  width: 100%;
+  min-height: calc(100vh - 84px);
+}
+
+.App {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+::selection {
+  background: rgba(18, 104, 179, 0.16);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (max-width: 768px) {
+  .container {
+    min-height: calc(100vh - 72px);
   }
 }

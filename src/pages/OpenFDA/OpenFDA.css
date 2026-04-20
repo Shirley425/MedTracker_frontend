@@ -1,0 +1,105 @@
+.openfda-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  text-align: left;
+}
+
+.openfda-container h2 {
+  font-size: clamp(2.1rem, 4vw, 3.1rem);
+  color: var(--color-text);
+  margin-bottom: 0.45rem;
+}
+
+.openfda-container h3 {
+  margin: 0 0 1.4rem;
+  color: var(--color-text-soft);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.openfda-container input {
+  width: min(100%, 540px);
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(25, 50, 74, 0.14);
+  border-radius: 16px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.92);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.openfda-container input:focus {
+  border-color: rgba(18, 104, 179, 0.56);
+  box-shadow: 0 0 0 4px rgba(18, 104, 179, 0.12);
+}
+
+.openfda-container button {
+  margin-left: 0.9rem;
+  padding: 0.92rem 1.3rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary), #2491de);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(18, 104, 179, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.openfda-container button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(18, 104, 179, 0.26);
+}
+
+.error {
+  margin-top: 1rem;
+  color: var(--color-danger);
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(192, 61, 66, 0.2);
+  background: rgba(192, 61, 66, 0.08);
+}
+
+.result {
+  margin-top: 2rem;
+  text-align: left;
+  color: var(--color-text);
+  padding: 1.5rem;
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-card);
+}
+
+.result h3 {
+  color: var(--color-primary-strong);
+  margin: 1.4rem 0 0.6rem;
+  font-size: 1.1rem;
+}
+
+.result h3:first-child {
+  margin-top: 0;
+}
+
+.result p {
+  margin-bottom: 0.8rem;
+  line-height: 1.75;
+}
+
+@media (max-width: 640px) {
+  .openfda-container {
+    padding: 2.25rem 1rem 3rem;
+  }
+
+  .openfda-container input,
+  .openfda-container button {
+    width: 100%;
+  }
+
+  .openfda-container button {
+    margin: 0.75rem 0 0;
+  }
+}
